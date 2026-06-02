@@ -1,7 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// NutriLog Prisma Schema
+// Meal, FoodItem (103 nullable nutrient columns), DailyTarget
+// Generated for Railway PostgreSQL via prisma db push
 
 generator client {
   provider = "prisma-client"
@@ -10,4 +9,149 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+model Meal {
+  id          String     @id @default(cuid())
+  description String
+  createdAt   DateTime   @default(now())
+  foodItems   FoodItem[]
+}
+
+model FoodItem {
+  id              String   @id @default(cuid())
+  mealId          String
+  meal            Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  name            String
+  quantityG       Float
+  quantityDisplay String
+  usdaFdcId       Int?
+  usdaDescription String?
+  usdaMatched     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  // ── Proximates (11) ──────────────────────────────────────────────────────────
+  water_g                       Float?
+  energy_kcal                   Float?
+  energy_atwater_general_kcal   Float?
+  energy_atwater_specific_kcal  Float?
+  protein_g                     Float?
+  fat_total_g                   Float?
+  carbohydrate_g                Float?
+  fiber_g                       Float?
+  sugars_total_g                Float?
+  nitrogen_g                    Float?
+  ash_g                         Float?
+
+  // ── Minerals (10) ────────────────────────────────────────────────────────────
+  calcium_mg    Float?
+  iron_mg       Float?
+  magnesium_mg  Float?
+  phosphorus_mg Float?
+  potassium_mg  Float?
+  sodium_mg     Float?
+  zinc_mg       Float?
+  copper_mg     Float?
+  manganese_mg  Float?
+  selenium_mcg  Float?
+
+  // ── Vitamins (20) ────────────────────────────────────────────────────────────
+  vitamin_a_rae_mcg   Float?
+  retinol_mcg         Float?
+  carotene_beta_mcg   Float?
+  vitamin_c_mg        Float?
+  vitamin_d_mcg       Float?
+  vitamin_e_mg        Float?
+  vitamin_k1_mcg      Float?
+  thiamin_mg          Float?
+  riboflavin_mg       Float?
+  niacin_mg           Float?
+  pantothenic_acid_mg Float?
+  vitamin_b6_mg       Float?
+  biotin_mcg          Float?
+  folate_total_mcg    Float?
+  folate_dfe_mcg      Float?
+  vitamin_b12_mcg     Float?
+  choline_total_mg    Float?
+  lycopene_mcg        Float?
+  caffeine_mg         Float?
+  theobromine_mg      Float?
+
+  // ── Amino Acids (18) ─────────────────────────────────────────────────────────
+  tryptophan_g    Float?
+  threonine_g     Float?
+  isoleucine_g    Float?
+  leucine_g       Float?
+  lysine_g        Float?
+  methionine_g    Float?
+  cystine_g       Float?
+  phenylalanine_g Float?
+  tyrosine_g      Float?
+  valine_g        Float?
+  arginine_g      Float?
+  histidine_g     Float?
+  alanine_g       Float?
+  aspartic_acid_g Float?
+  glutamic_acid_g Float?
+  glycine_g       Float?
+  proline_g       Float?
+  serine_g        Float?
+
+  // ── Fatty Acids (22) ─────────────────────────────────────────────────────────
+  sfa_total_g      Float?
+  mufa_total_g     Float?
+  pufa_total_g     Float?
+  cholesterol_mg   Float?
+  sfa_4_0_g        Float?
+  sfa_6_0_g        Float?
+  sfa_8_0_g        Float?
+  sfa_10_0_g       Float?
+  sfa_12_0_g       Float?
+  sfa_14_0_g       Float?
+  sfa_16_0_g       Float?
+  sfa_18_0_g       Float?
+  mufa_18_1_g      Float?
+  pufa_18_2_g      Float?
+  pufa_18_3_g      Float?
+  pufa_20_4_g      Float?
+  pufa_20_5_epa_g  Float?
+  pufa_22_5_dpa_g  Float?
+  pufa_22_6_dha_g  Float?
+  starch_g         Float?
+  sucrose_g        Float?
+  glucose_g        Float?
+
+  // ── Bioactives / Other (22) ──────────────────────────────────────────────────
+  fructose_g           Float?
+  lactose_g            Float?
+  iodine_mcg           Float?
+  carotene_alpha_mcg   Float?
+  vitamin_e_added_mg   Float?
+  vitamin_k2_mcg       Float?
+  folate_food_mcg      Float?
+  vitamin_b12_added_mcg Float?
+  lutein_zeaxanthin_mcg Float?
+  sugars_added_g       Float?
+  galactose_g          Float?
+  maltose_g            Float?
+  sfa_20_0_g           Float?
+  sfa_22_0_g           Float?
+  mufa_16_1_g          Float?
+  mufa_20_1_g          Float?
+  mufa_22_1_g          Float?
+  pufa_18_4_g          Float?
+  tocopherol_beta_mg   Float?
+  tocopherol_gamma_mg  Float?
+  tocopherol_delta_mg  Float?
+  fluoride_mcg         Float?
+}
+
+model DailyTarget {
+  id           String   @id @default(cuid())
+  columnName   String   @unique
+  label        String
+  targetAmount Float
+  unit         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
