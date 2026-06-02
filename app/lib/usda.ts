@@ -161,3 +161,85 @@ export const NUTRIENT_ID_TO_COLUMN: Record<number, string> = {
   1127: 'tocopherol_delta_mg',     // Tocopherol, delta [ASSUMED: FDC pattern]
   1099: 'fluoride_mcg',            // Fluoride [ASSUMED: FDC pattern]
 };
+
+// ── USDA API helpers ──────────────────────────────────────────────────────────
+
+const USDA_BASE = 'https://api.nal.usda.gov/fdc/v1';
+
+/**
+ * Search USDA FoodData Central for a food item by name.
+ *
+ * Strategy:
+ * 1. First tries `foodName + " raw"` to prefer Foundation Foods entries.
+ * 2. If zero results, retries with the plain `foodName`.
+ * 3. Returns the highest-priority dataType match (Foundation > SR Legacy > Survey > Branded).
+ * 4. Returns null (never throws) if both queries return empty results or on fetch error.
+ *
+ * Per CONTEXT.md: zero USDA results must NOT block meal save (usdaMatched=false path).
+ */
+export async function searchUSDA(foodName: string): Promise<USDAFood | null> {
+  const apiKey = process.env.USDA_API_KEY ?? 'DEMO_KEY';
+  const queries = [`${foodName} raw`, foodName];
+
+  for (const query of queries) {
+    try {
+      const url = new URL(`${USDA_BASE}/foods/search`);
+      url.searchParams.set('api_key', apiKey);
+      url.searchParams.set('query', query);
+      url.searchParams.set('dataType', 'Foundation,SR Legacy,Survey (FNDDS),Branded');
+      url.searchParams.set('pageSize', '5');
+
+      const res = await fetch(url.toString());
+
+      if (!res.ok) {
+        console.error(`[usda] HTTP ${res.status} for query "${query}"`);
+        continue;
+      }
+
+      const data = (await res.json()) as USDASearchResponse;
+
+      if (data.foods?.length > 0) {
+        // Select highest-priority dataType match
+        const sorted = [...data.foods].sort((a, b) => {
+          const ai = DATA_TYPE_PRIORITY.indexOf(a.dataType);
+          const bi = DATA_TYPE_PRIORITY.indexOf(b.dataType);
+          // Unknown dataTypes sort last
+          return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
+        });
+        return sorted[0];
+      }
+    } catch (err) {
+      console.error(`[usda] Fetch error for query "${query}":`, err);
+      return null;
+    }
+  }
+
+  // Both queries returned empty results
+  return null;
+}
+
+/**
+ * Convert USDA per-100g nutrient values to consumed quantity.
+ *
+ * Iterates food.foodNutrients, looks up each nutrientId in NUTRIENT_ID_TO_COLUMN,
+ * and scales by (quantityG / 100). Unknown nutrient IDs are silently ignored.
+ * Null nutrient values are skipped.
+ *
+ * Returns a Record<string, number> keyed by Prisma FoodItem column name,
+ * ready to spread into a Prisma create/update call.
+ */
+export function nutrientsToColumns(
+  food: USDAFood,
+  quantityG: number,
+): Record<string, number> {
+  const result: Record<string, number> = {};
+
+  for (const nutrient of food.foodNutrients) {
+    const columnName = NUTRIENT_ID_TO_COLUMN[nutrient.nutrientId];
+    if (columnName && nutrient.value != null) {
+      result[columnName] = (nutrient.value * quantityG) / 100;
+    }
+  }
+
+  return result;
+}
