@@ -41,7 +41,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 **Wave 1**
 
-- [ ] 01-01-PLAN.md — Prisma schema (Meal, FoodItem 103-column, DailyTarget) + db push to Railway PostgreSQL
+- [x] 01-01-PLAN.md — Prisma schema (Meal, FoodItem 103-column, DailyTarget) + db push to Railway PostgreSQL
 - [ ] 01-02-PLAN.md — app/lib/usda.ts: NUTRIENT_ID_TO_COLUMN map, searchUSDA(), nutrientsToColumns()
 - [x] 01-05-PLAN.md — Next.js project setup: npx create-next-app, shadcn init, next-themes, .env.example, all dependencies
 
@@ -125,7 +125,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Logging Core | 1/5 | In Progress|  |
+| 1. Logging Core | 2/5 | In Progress|  |
 | 2. MCP Query Layer | 0/5 | Not started | - |
 | 3. Production Deployment | 0/4 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
