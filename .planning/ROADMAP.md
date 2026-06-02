@@ -34,14 +34,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. The chat UI shows a collapsible food card per item with kcal and macros visible without expanding
   5. An unmatched food item (no USDA result) shows a grey dot and does not crash the flow
 **Plans**: 5 plans
-**UI hint**: yes
 
 Plans:
-- [ ] 01-01: Prisma schema with Meal, FoodItem (wide-column), DailyTarget; run `db push`
-- [ ] 01-02: `app/lib/usda.ts` — NUTRIENT_ID_TO_COLUMN map, searchUSDA(), nutrientsToColumns()
-- [ ] 01-03: `app/api/chat/route.ts` — extractFoodItems() LLM call, USDA parallel lookup, Prisma create, summary LLM call
-- [ ] 01-04: `app/components/ChatInterface.tsx` — chat UI with FoodCard, typing indicator, Enter-to-send
-- [ ] 01-05: `app/globals.css` — mobile-first dark theme, food card styles, macro pill colours
+- [ ] 01-01-PLAN.md — Prisma schema (Meal, FoodItem 103-column, DailyTarget) + db push to Railway PostgreSQL
+- [ ] 01-02-PLAN.md — app/lib/usda.ts: NUTRIENT_ID_TO_COLUMN map, searchUSDA(), nutrientsToColumns()
+- [ ] 01-03-PLAN.md — app/api/chat/route.ts: extractFoodItems() LLM call, parallel USDA lookup, Prisma create, streaming SSE confirmation
+- [ ] 01-04-PLAN.md — app/components/ChatInterface.tsx: chat UI with FoodCard, typing indicator, Enter-to-send (honors UI-SPEC.md)
+- [ ] 01-05-PLAN.md — Next.js project setup: npx create-next-app, shadcn init, next-themes, .env.example, all dependencies
 
 ### Phase 2: MCP Query Layer
 **Goal**: MCP server is running locally and all 8 tools return correct data from the Railway database

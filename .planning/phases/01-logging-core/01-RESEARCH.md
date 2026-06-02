@@ -607,10 +607,10 @@ The following IDs are from training knowledge and match the 4-digit FDC ID patte
 | 1162 | vitamin_c_mg | mg | Vitamin C (partially confirmed) |
 | 1114 | vitamin_d_mcg | mcg | Vitamin D total (partially confirmed) |
 | 1110 | vitamin_e_added_mg | mg | Vitamin E, added |
-| 1183 | vitamin_k2_mcg | mcg | Vitamin K2 (MK-4) |
+| 1185 | vitamin_k2_mcg | mcg | Vitamin K2 (MK-4) [ASSUMED — 1183 is lutein+zeaxanthin per USDA] |
 | 1253 | cholesterol_mg | mg | Cholesterol (partially confirmed) |
 | 1187 | lycopene_mcg | mcg | Lycopene |
-| 1183 | lutein_zeaxanthin_mcg | mcg | Lutein + zeaxanthin |
+| 1183 | lutein_zeaxanthin_mcg | mcg | Lutein + zeaxanthin (confirmed) |
 | 1056 | starch_g | g | Starch |
 | 1010 | sucrose_g | g | Sucrose |
 | 1011 | glucose_g | g | Glucose |
@@ -866,22 +866,18 @@ export function ChatInterface() {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Exact list of 103 nutrient column names**
    - What we know: 65+ confirmed or high-confidence nutrient IDs documented above
    - What's unclear: The remaining ~38 IDs to reach exactly 103 (additional individual fatty acids, carotenoids, tocopherol isomers, trace minerals)
-   - Recommendation: During Plan 01-01 (schema), build the map with confirmed IDs. Plan 01-02 (usda.ts) implementation task should include a step: fetch a full Foundation Foods item with a registered API key and log all nutrient IDs to find the gaps. Add missing columns to schema via `prisma db push` in the same session.
+   - **RESOLVED:** Build schema from confirmed + high-confidence IDs documented in this file. During Plan 01-02 execution, fetch a full Foundation Foods item with a registered USDA API key and log all returned nutrient IDs to fill gaps. Add any missing columns via `prisma db push` in the same session — Prisma supports additive column additions without destructive migration. The acceptance criterion (exactly 103 `Float?` columns) enforces delivery.
 
 2. **Streaming protocol: single response vs two-phase**
-   - What we know: Route handler must send both meal data (JSON) and confirmation text (stream) to client
-   - What's unclear: Whether to use SSE (`text/event-stream`) protocol or a custom chunked JSON format
-   - Recommendation: SSE is the cleaner protocol. Client reads via `EventSource` or `fetch` + `ReadableStreamDefaultReader`. Use `data: {...}\n\n` format with a `type` discriminator field (`{ type: 'meal', ... }` and `{ type: 'text', ... }`).
+   - **RESOLVED:** SSE via `ReadableStream` with `Content-Type: text/event-stream`. Use `data: {json}\n\n` format with a `type` discriminator (`{ type: 'meal', meal }` then `{ type: 'text', text }` chunks then `[DONE]`). Plans 01-03 and 01-04 implement this protocol consistently.
 
 3. **Whether to use `energy_kcal` (ID 1008) or `energy_atwater_general_kcal` (ID 2047) as primary energy column**
-   - What we know: Foundation Foods reports both IDs; ID 1008 is being phased out per USDA announcement; 2047 is the current standard for Foundation Foods
-   - What's unclear: SR Legacy items may only report 1008
-   - Recommendation: Map both IDs to the same `energy_kcal` column (last-write wins), or map 2047 to `energy_kcal` and 1008 to `energy_kcal_legacy`. The planner should decide; map both for now.
+   - **RESOLVED:** Map both IDs as separate columns: ID 2047 → `energy_kcal` (primary, Foundation Foods standard), ID 1008 → `energy_kcal_legacy` (SR Legacy fallback). Plan 01-01 schema and Plan 01-02 NUTRIENT_ID_TO_COLUMN both implement this mapping.
 
 ---
 
