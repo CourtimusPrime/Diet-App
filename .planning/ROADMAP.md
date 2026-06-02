@@ -47,7 +47,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 01-03-PLAN.md — app/api/chat/route.ts: extractFoodItems() LLM call, parallel USDA lookup, Prisma create, streaming SSE confirmation
+- [x] 01-03-PLAN.md — app/api/chat/route.ts: extractFoodItems() LLM call, parallel USDA lookup, Prisma create, streaming SSE confirmation
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -125,7 +125,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Logging Core | 3/5 | In Progress|  |
+| 1. Logging Core | 4/5 | In Progress|  |
 | 2. MCP Query Layer | 0/5 | Not started | - |
 | 3. Production Deployment | 0/4 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
