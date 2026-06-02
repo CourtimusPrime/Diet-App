@@ -877,7 +877,7 @@ export function ChatInterface() {
    - **RESOLVED:** SSE via `ReadableStream` with `Content-Type: text/event-stream`. Use `data: {json}\n\n` format with a `type` discriminator (`{ type: 'meal', meal }` then `{ type: 'text', text }` chunks then `[DONE]`). Plans 01-03 and 01-04 implement this protocol consistently.
 
 3. **Whether to use `energy_kcal` (ID 1008) or `energy_atwater_general_kcal` (ID 2047) as primary energy column**
-   - **RESOLVED:** Map both IDs as separate columns: ID 2047 → `energy_kcal` (primary, Foundation Foods standard), ID 1008 → `energy_kcal_legacy` (SR Legacy fallback). Plan 01-01 schema and Plan 01-02 NUTRIENT_ID_TO_COLUMN both implement this mapping.
+   - **RESOLVED:** Map all three energy IDs as separate columns: ID 1008 → `energy_kcal` (general label), ID 2047 → `energy_atwater_general_kcal` (Foundation Foods standard), ID 2048 → `energy_atwater_specific_kcal`. Both Plan 01-01 (schema columns) and Plan 01-02 (NUTRIENT_ID_TO_COLUMN map) implement this mapping. There is no `energy_kcal_legacy` column.
 
 ---
 
