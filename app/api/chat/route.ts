@@ -33,13 +33,13 @@ interface ExtractedFood {
 /**
  * Extract individual food items from a natural-language meal description.
  *
- * Uses google/gemini-2.0-flash-001 via OpenRouter with response_format json_schema
+ * Uses google/gemini-3.5-flash via OpenRouter with response_format json_schema
  * strict mode to enforce output shape. Returns [] on any error — never throws.
  */
 async function extractFoodItems(userMessage: string): Promise<ExtractedFood[]> {
   try {
     const response = await openai.chat.completions.create({
-      model: 'google/gemini-2.0-flash-001',
+      model: 'google/gemini-3.5-flash',
       messages: [
         {
           role: 'system',
@@ -177,7 +177,7 @@ export async function POST(req: Request): Promise<Response> {
 
         // Step 6: Stream friendly confirmation message
         const confirmStream = await openai.chat.completions.create({
-          model: 'google/gemini-2.0-flash-001',
+          model: 'google/gemini-3.5-flash',
           stream: true,
           messages: [
             {

@@ -2,6 +2,22 @@
 // Provides: NUTRIENT_ID_TO_COLUMN map, searchUSDA(), nutrientsToColumns()
 // All USDA nutrient IDs are 4-digit FDC IDs (e.g. 1003 for protein, not 203)
 
+import https from 'node:https';
+
+function httpsGet(url: string): Promise<unknown> {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, { family: 4 } as object, (res) => {
+      let data = '';
+      res.on('data', (chunk: string) => { data += chunk; });
+      res.on('end', () => {
+        try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(10000, () => { req.destroy(new Error('USDA request timeout')); });
+  });
+}
+
 // ── Interfaces ────────────────────────────────────────────────────────────────
 
 export interface USDAFoodNutrient {
@@ -186,17 +202,10 @@ export async function searchUSDA(foodName: string): Promise<USDAFood | null> {
       const url = new URL(`${USDA_BASE}/foods/search`);
       url.searchParams.set('api_key', apiKey);
       url.searchParams.set('query', query);
-      url.searchParams.set('dataType', 'Foundation,SR Legacy,Survey (FNDDS),Branded');
+      url.searchParams.set('dataType', 'Foundation,SR Legacy,Branded');
       url.searchParams.set('pageSize', '5');
 
-      const res = await fetch(url.toString());
-
-      if (!res.ok) {
-        console.error(`[usda] HTTP ${res.status} for query "${query}"`);
-        continue;
-      }
-
-      const data = (await res.json()) as USDASearchResponse;
+      const data = (await httpsGet(url.toString())) as USDASearchResponse;
 
       if (data.foods?.length > 0) {
         // Select highest-priority dataType match
