@@ -318,7 +318,7 @@ export function ChatInterface() {
       </div>
 
       {/* ── Scroll area ─────────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto p-4 pb-20 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 pb-36 space-y-4">
         {/* Empty state */}
         {messages.length === 0 && !isPending && (
           <div className="flex flex-col items-center justify-center h-full text-center py-16">
@@ -393,7 +393,7 @@ export function ChatInterface() {
       </div>
 
       {/* ── Fixed input bar ──────────────────────────────────────────────── */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 border-t bg-zinc-100/95 dark:bg-zinc-900/95 backdrop-blur p-3">
+      <div className="fixed bottom-16 left-0 right-0 z-10 border-t bg-zinc-100/95 dark:bg-zinc-900/95 backdrop-blur p-3">
         <div className="flex items-end gap-2 max-w-screen-sm mx-auto">
           <Textarea
             ref={textareaRef}

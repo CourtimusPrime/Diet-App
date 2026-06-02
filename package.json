@@ -6,9 +6,11 @@
     "dev": "NODE_OPTIONS='--dns-result-order=ipv4first' next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "mcp": "bun mcp/server.ts"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@base-ui/react": "^1.5.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
@@ -25,6 +27,7 @@
     "prisma": "^7.8.0",
     "react": "^18",
     "react-dom": "^18",
+    "recharts": "^3.8.1",
     "shadcn": "^4.10.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",

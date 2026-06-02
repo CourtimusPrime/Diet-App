@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ThemeProvider } from '@/components/theme-provider'
+import { BottomNav } from '@/components/BottomNav'
 import './globals.css'
 
 const geistSans = localFont({
@@ -34,6 +35,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <BottomNav />
         </ThemeProvider>
       </body>
     </html>
