@@ -21,11 +21,12 @@ End-to-end meal logging flow: user types a natural language description of what 
 
 ### Chat UI Layout & Theming
 - Use **Shadcn/ui** components throughout (Button, Card, Input, Badge, Collapsible, etc.)
-- **Light mode as the default** — Shadcn default theme, white/gray-50 background; dark mode support is optional/secondary
+- **System `prefers-color-scheme`** drives theme — light and dark both required; implement via `next-themes` with `defaultTheme="system"` 
 - Food cards collapsed by default — name + USDA match dot + kcal + 3 macro pills (Shadcn Badge) visible
 - Macro pills: Protein (blue badge), Carbs (amber badge), Fat (red badge) — coloured for fast scanning
 - Fixed bottom input area, full-width, Shadcn Textarea with send icon Button (Enter to submit, Shift+Enter newline)
 - Shadcn Collapsible for expanding food cards to show full nutrient breakdown
+- Use **Lucide icons** (`lucide-react`) for all iconography — no other icon libraries
 
 ### USDA Integration & Error Handling
 - Search strategy: append `" raw"` to LLM food name for Foundation Foods preference; retry without suffix if zero results
@@ -73,8 +74,8 @@ End-to-end meal logging flow: user types a natural language description of what 
 - USDA DEMO_KEY used for dev (30 req/hr); production uses registered free key (1,000 req/hr)
 - Confirmation message after logging should be friendly and summarize what was logged (LLM-generated, not templated)
 - Green dot = USDA matched, grey dot = no match — visible on collapsed card without expanding
-- **DATABASE_URL** will be added to `.env` by user later — build with Prisma schema complete but do not require DB to be running for the app to start; use try/catch around Prisma calls in API routes so the app boots without a live DB
-- Shadcn/ui: initialize with `npx shadcn@latest init` using default (New York style, light mode default)
+- **DATABASE_URL** is set in `.env` pointing to Railway PostgreSQL — run `prisma db push` after schema is written to create tables
+- Shadcn/ui: initialize with `npx shadcn@latest init` using New York style preset
 
 </specifics>
 

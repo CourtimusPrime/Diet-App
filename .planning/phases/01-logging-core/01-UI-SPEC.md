@@ -18,12 +18,13 @@ created: 2026-06-02
 | Property | Value |
 |----------|-------|
 | Tool | shadcn/ui |
-| Preset | New York style, light mode default (`npx shadcn@latest init`) |
+| Preset | New York style (`npx shadcn@latest init`) |
+| Theme | Follows system `prefers-color-scheme` — light and dark both required |
 | Component library | Radix UI (via shadcn) |
 | Icon library | lucide-react (bundled with shadcn New York) |
 | Font | Geist Sans (Next.js 14 default) at system fallback stack |
 
-> Source: CONTEXT.md decisions — "Shadcn/ui: initialize with `npx shadcn@latest init` using default (New York style, light mode default)"
+> Source: CONTEXT.md + user decision — system `prefers-color-scheme` drives theme; no forced default. Implement via `next-themes` with `defaultTheme="system"`.
 
 ---
 
@@ -52,11 +53,11 @@ Exceptions:
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
 | Body | 16px | 400 | 1.5 | Chat confirmation messages, food card expanded detail |
-| Label | 14px | 500 | 1.4 | Food card item name (collapsed), macro pill text, nutrient row labels |
+| Label | 14px | 400 | 1.4 | Food card item name (collapsed), macro pill text, nutrient row labels |
 | Heading | 20px | 600 | 1.2 | Meal group date heading ("Today", "June 2") |
-| Display | 28px | 700 | 1.1 | Not used in Phase 1 |
+| Display | 28px | 600 | 1.1 | Not used in Phase 1 |
 
-> Display declared for template completeness; not rendered in Phase 1. Label at weight 500 (medium) differentiates from body without requiring a separate semibold step.
+> Only 2 weights used: 400 (regular) for Body and Label — size (14px vs 16px) provides the distinction. 600 (semibold) for Heading and Display. Display declared for template completeness; not rendered in Phase 1.
 
 Font family: `font-sans` (Geist Sans → system-ui fallback via Next.js defaults).
 
@@ -64,7 +65,7 @@ Font family: `font-sans` (Geist Sans → system-ui fallback via Next.js defaults
 
 ## Color
 
-Palette: Shadcn New York default — zinc/slate scale. Light mode is default; dark mode is optional/secondary and not required for Phase 1.
+Palette: Shadcn New York default — zinc/slate scale. Both light and dark modes required (system `prefers-color-scheme`). Use Shadcn CSS variables (`--background`, `--foreground`, etc.) rather than hardcoded hex so dark mode is automatic.
 
 | Role | Value | Usage |
 |------|-------|-------|
@@ -103,6 +104,18 @@ All components from shadcn official registry only.
 | Textarea | `shadcn add textarea` | Chat message input |
 | Separator | `shadcn add separator` | Divider between collapsed and expanded nutrient sections |
 
+**Lucide Icons** (from `lucide-react`, already bundled with shadcn New York — prefer Lucide for all icons):
+
+| Icon | Import | Usage |
+|------|--------|-------|
+| `Send` | `lucide-react` | Send Button icon |
+| `ChevronDown` | `lucide-react` | Collapsed food card toggle |
+| `ChevronUp` | `lucide-react` | Expanded food card toggle |
+| `Loader2` | `lucide-react` | Typing indicator (animate-spin) |
+| `Utensils` | `lucide-react` | App header branding / empty state |
+
+> User instruction: use Lucide icons where possible. All icons must be from `lucide-react` — no SVG files, no other icon libraries.
+
 > Source: CONTEXT.md — "Button, Card, Input, Badge, Collapsible" and "Shadcn Collapsible for food cards", "Shadcn Textarea with send icon Button"
 
 ---
@@ -139,7 +152,7 @@ All components from shadcn official registry only.
 ```
 
 - `●` = 8px dot: green (`bg-green-500`) or grey (`bg-zinc-400`)
-- Food name: 14px weight-500 label
+- Food name: 14px weight-400 (Label role)
 - kcal Badge: secondary variant, right-aligned before chevron
 - 3 macro Badges: blue/amber/red as specified, inline row
 - Chevron icon (lucide `ChevronDown`): toggles Collapsible
@@ -190,7 +203,7 @@ All components from shadcn official registry only.
 
 | Element | Copy |
 |---------|------|
-| Primary CTA | "Send" (sr-only text on icon Button; tooltip on hover: "Send message") |
+| Primary CTA | "Send message" (sr-only text on icon Button; tooltip on hover: "Send message") |
 | Input placeholder | "What did you eat?" |
 | Empty state heading | "Start logging" |
 | Empty state body | "Describe what you ate — 'I had 2 scrambled eggs and toast' — and I'll track the nutrition." |
@@ -218,7 +231,7 @@ Every UI element must be implemented in all applicable states:
 | USDA dot | green (matched), grey (unmatched) |
 | Chat area | empty (no messages), has-messages, loading (typing indicator visible) |
 | Macro Badges | always visible on collapsed card — no hover state needed |
-| App | light mode (primary), dark mode (optional, not required Phase 1) |
+| App | light mode (system default), dark mode (system default) — both required via `prefers-color-scheme` |
 
 ---
 
@@ -248,11 +261,11 @@ No third-party registries declared for Phase 1.
 
 ## Checker Sign-Off
 
-- [ ] Dimension 1 Copywriting: PASS
-- [ ] Dimension 2 Visuals: PASS
-- [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: PASS
+- [x] Dimension 1 Copywriting: PASS
+- [x] Dimension 2 Visuals: PASS
+- [x] Dimension 3 Color: PASS (FLAG: system theme posture updated per user; CSS variables approach compatible)
+- [x] Dimension 4 Typography: PASS (FLAG: weight-500 in layout description corrected to weight-400)
+- [x] Dimension 5 Spacing: PASS
+- [x] Dimension 6 Registry Safety: PASS
 
-**Approval:** pending
+**Approval:** approved
