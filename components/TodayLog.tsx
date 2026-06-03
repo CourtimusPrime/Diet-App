@@ -107,20 +107,21 @@ export function TodayLog({ refreshKey }: TodayLogProps) {
           setFoodItems(snapshot)
         },
       },
-      onAutoClose: async () => {
-        if (undone) return
-        try {
-          const res = await fetch(`/api/meals/${mealId}`, { method: 'DELETE' })
-          if (!res.ok) {
-            await fetchToday()
-            toast.error("Couldn't delete meal. Please try again.")
-          }
-        } catch {
-          await fetchToday()
-          toast.error("Couldn't delete meal. Check your connection.")
-        }
-      },
     })
+
+    setTimeout(async () => {
+      if (undone) return
+      try {
+        const res = await fetch(`/api/meals/${mealId}`, { method: 'DELETE' })
+        if (!res.ok) {
+          await fetchToday()
+          toast.error("Couldn't delete meal. Please try again.")
+        }
+      } catch {
+        await fetchToday()
+        toast.error("Couldn't delete meal. Check your connection.")
+      }
+    }, 5100)
   }
 
   const sortedItems = sortItems(foodItems, sortKey)
