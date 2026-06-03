@@ -1,6 +1,7 @@
 import OpenAI from 'openai'
 import { prisma } from '@/app/lib/prisma'
 import { searchUSDA, nutrientsToColumns } from '@/app/lib/usda'
+import type { USDAFood } from '@/app/lib/usda'
 
 const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
@@ -93,12 +94,21 @@ export class NoFoodItemsError extends Error {
   }
 }
 
+async function usdaMatchSafe(foodName: string): Promise<USDAFood | null> {
+  try {
+    return await searchUSDA(foodName)
+  } catch (err) {
+    console.warn('[food] USDA lookup failed for "' + foodName + '":', err)
+    return null
+  }
+}
+
 export async function logMeal(description: string, userId?: string | null) {
   const foods = await extractFoodItems(description)
   if (foods.length === 0) throw new NoFoodItemsError()
 
   const usdaResults = await Promise.all(
-    foods.map(async (food) => ({ food, usdaResult: await searchUSDA(food.name) })),
+    foods.map(async (food) => ({ food, usdaResult: await usdaMatchSafe(food.name) })),
   )
 
   const foodItemsData = usdaResults.map(({ food, usdaResult }) => {
