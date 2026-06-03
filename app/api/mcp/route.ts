@@ -72,8 +72,8 @@ function newTransport(): WebStandardStreamableHTTPServerTransport {
   let transport!: WebStandardStreamableHTTPServerTransport
   transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: () => crypto.randomUUID(),
-    onsessioninitialized: (id) => sessions.set(id, transport),
-    onsessionclosed: (id) => sessions.delete(id),
+    onsessioninitialized: (id) => { sessions.set(id, transport) },
+    onsessionclosed: (id) => { sessions.delete(id) },
   })
   return transport
 }
