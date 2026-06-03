@@ -13,6 +13,8 @@ const tabs = [
 export function BottomNav() {
   const pathname = usePathname()
 
+  if (pathname === '/sign-in' || pathname === '/sign-up') return null
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-background/95 backdrop-blur border-t flex">
       {tabs.map(({ href, label, icon: Icon }) => {
