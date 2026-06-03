@@ -85,19 +85,26 @@ Plans:
 **Requirements**: DEPLOY-01, DEPLOY-02, DEPLOY-03
 **Success Criteria** (what must be TRUE):
 
-  1. Railway deployment succeeds with `prisma migrate deploy && next start` and app is reachable at Railway URL
+  1. Railway deployment succeeds and app is reachable at Railway URL with `next start -p ${PORT:-3000}`
   2. Logging a meal via the live URL creates a database record visible via MCP
   3. Claude Desktop can call `get_meals` and return real logged meals from the Railway database
   4. `.env.example` documents all required variables with descriptions
 
-**Plans**: 4 plans
+**Plans**: 3 plans
 
 Plans:
 
-- [ ] 03-01: `railway.json` deploy config; Railway project + PostgreSQL plugin setup
-- [ ] 03-02: Set all env vars in Railway dashboard; trigger first deploy; verify migration runs
-- [ ] 03-03: Build MCP server locally; add entry to `claude_desktop_config.json`; verify tool list loads in Claude
-- [ ] 03-04: End-to-end smoke test: log meal via web → query via Claude Desktop MCP
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Fix package.json PORT flag + packageManager field; create railway.json; create Railway project via dashboard
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 03-02-PLAN.md — Set env vars in Railway dashboard; trigger first deploy; verify live app logs a meal
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 03-03-PLAN.md — Verify .env.example completeness; end-to-end smoke test: log via Railway URL → query via Claude Desktop MCP
 
 ### Phase 03.1: Add multi-user support. This includes creating a landing page, an auth screen (email/password & 'Sign in with Google'), and state management. (INSERTED)
 
@@ -139,5 +146,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Logging Core | 5/5 | Complete   | 2026-06-03 |
 | 2. MCP Query Layer | 2/2 | Complete   | 2026-06-03 |
-| 3. Production Deployment | 0/4 | Not started | - |
+| 3. Production Deployment | 0/3 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
