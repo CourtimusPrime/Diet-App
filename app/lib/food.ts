@@ -14,7 +14,17 @@ const SERVING_SIZES =
   '1 oz = 28g\n' +
   '1 slice bread = ~30g\n' +
   '1 large egg = ~50g\n' +
-  '1 medium apple = ~182g'
+  '1 medium apple = ~182g\n' +
+  '1 shot (spirits) = 44ml / ~44g\n' +
+  '1 can soda/beer = 355ml / ~355g\n' +
+  '1 medium banana = ~118g\n' +
+  '1 medium potato = ~213g\n' +
+  '1 chicken breast (medium) = ~174g\n' +
+  '1 cup cooked rice = ~186g\n' +
+  '1 cup cooked pasta = ~140g\n' +
+  '1 cup raw oats = ~80g\n' +
+  '1 cup whole milk = ~244g\n' +
+  '1 cup orange juice = ~248g'
 
 export interface ExtractedFood {
   name: string
@@ -33,6 +43,7 @@ export async function extractFoodItems(userMessage: string): Promise<ExtractedFo
 Use USDA-friendly food names (e.g. "chicken breast raw" not "grilled chicken", "egg whole raw" not "scrambled eggs").
 Convert all quantities to grams using these references:
 ${SERVING_SIZES}
+For grains and pasta, assume cooked weight unless the user specifies 'dry' or 'uncooked'. When quantity is vague (e.g. 'a bowl', 'some'), estimate conservatively using a single standard serving.
 Return JSON matching the schema exactly.`,
         },
         { role: 'user', content: userMessage },
