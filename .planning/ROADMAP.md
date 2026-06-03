@@ -134,14 +134,14 @@ Plans:
 **Goal:** Log tab showing today's food, with delete and sort (Chronological, Protein, Fat, Carbs, Fiber)
 **Requirements**: LOG-01, LOG-02, LOG-03, LOG-04, LOG-05
 **Depends on:** Phase 03.1
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 
 **Wave 1** *(plans 01 and 02 are independent — run in parallel)*
 
-- [ ] 03.2-01-PLAN.md — Install shadcn Skeleton and Sonner components (npx shadcn add skeleton && npx shadcn add sonner)
-- [ ] 03.2-02-PLAN.md — Extract FoodCard to components/FoodCard.tsx (add mealId/onDelete props); wire ChatInterface onMealLogged callback; create GET /api/meals/today and DELETE /api/meals/[mealId] endpoints
+- [x] 03.2-01-PLAN.md — Install shadcn Skeleton and Sonner components (npx shadcn add skeleton && npx shadcn add sonner)
+- [x] 03.2-02-PLAN.md — Extract FoodCard to components/FoodCard.tsx (add mealId/onDelete props); wire ChatInterface onMealLogged callback; create GET /api/meals/today and DELETE /api/meals/[mealId] endpoints
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -181,5 +181,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 2. MCP Query Layer | 2/2 | Complete   | 2026-06-03 |
 | 3. Production Deployment | 3/3 | Complete   | 2026-06-03 |
 | 3.1. Multi-User Support | 3/3 | Complete   | 2026-06-03 |
-| 3.2. Log Tab | 0/3 | Not started | - |
+| 3.2. Log Tab | 2/3 | In Progress|  |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
