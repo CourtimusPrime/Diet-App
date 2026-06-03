@@ -36,8 +36,8 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
 function sortItems(items: FoodItemWithMeal[], sort: SortKey): FoodItemWithMeal[] {
   if (sort === 'chronological') return items
   return [...items].sort((a, b) => {
-    const av = (a[sort] as number | null) ?? -Infinity
-    const bv = (b[sort] as number | null) ?? -Infinity
+    const av = typeof a[sort] === 'number' ? (a[sort] as number) : -Infinity
+    const bv = typeof b[sort] === 'number' ? (b[sort] as number) : -Infinity
     return bv - av
   })
 }
@@ -93,21 +93,34 @@ export function TodayLog({ refreshKey }: TodayLogProps) {
     void fetchToday()
   }, [fetchToday, refreshKey])
 
-  const handleDelete = async (mealId: string) => {
+  const handleDelete = (mealId: string) => {
     const snapshot = [...foodItems]
     setFoodItems((prev) => prev.filter((i) => i.mealId !== mealId))
+
+    let undone = false
     toast('Meal deleted', {
       duration: 5000,
       action: {
         label: 'Undo',
-        onClick: () => setFoodItems(snapshot),
+        onClick: () => {
+          undone = true
+          setFoodItems(snapshot)
+        },
+      },
+      onAutoClose: async () => {
+        if (undone) return
+        try {
+          const res = await fetch(`/api/meals/${mealId}`, { method: 'DELETE' })
+          if (!res.ok) {
+            await fetchToday()
+            toast.error("Couldn't delete meal. Please try again.")
+          }
+        } catch {
+          await fetchToday()
+          toast.error("Couldn't delete meal. Check your connection.")
+        }
       },
     })
-    const res = await fetch(`/api/meals/${mealId}`, { method: 'DELETE' })
-    if (!res.ok) {
-      setFoodItems(snapshot)
-      toast.error("Couldn't delete meal. Please try again.")
-    }
   }
 
   const sortedItems = sortItems(foodItems, sortKey)
@@ -115,7 +128,7 @@ export function TodayLog({ refreshKey }: TodayLogProps) {
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       {/* Sort pill row */}
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 py-2 sticky top-14 z-10 bg-background/95 backdrop-blur border-b">
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 py-2 sticky top-0 z-10 bg-background/95 backdrop-blur border-b">
         {SORT_OPTIONS.map(({ key, label }) => (
           <Button
             key={key}

@@ -9,10 +9,10 @@ export async function GET() {
 
   const today = new Date().toISOString().slice(0, 10)
   const start = new Date(`${today}T00:00:00.000Z`)
-  const end = new Date(`${today}T23:59:59.999Z`)
+  const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
 
   const meals = await prisma.meal.findMany({
-    where: { createdAt: { gte: start, lte: end }, userId },
+    where: { createdAt: { gte: start, lt: end }, userId },
     include: { foodItems: true },
     orderBy: { createdAt: 'desc' },
   })

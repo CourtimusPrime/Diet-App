@@ -148,7 +148,7 @@ export function ChatInterface({ onMealLogged }: ChatInterfaceProps) {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-background">
       {/* ── Header (sticky top) ─────────────────────────────────────────── */}
       <div className="sticky top-0 z-10 flex items-center h-14 px-4 border-b bg-background/95 backdrop-blur">
         <Utensils className="mr-2 h-5 w-5" />

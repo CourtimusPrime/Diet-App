@@ -23,6 +23,7 @@ export interface FoodItem {
   protein_g: number | null
   carbohydrate_g: number | null
   fat_total_g: number | null
+  fiber_g: number | null
   [key: string]: unknown
 }
 
