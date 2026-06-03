@@ -36,7 +36,7 @@ export interface ExtractedFood {
 export async function extractFoodItems(userMessage: string): Promise<ExtractedFood[]> {
   try {
     const response = await openai.chat.completions.create({
-      model: 'google/gemini-3.5-flash',
+      model: 'google/gemini-2.0-flash-001',
       messages: [
         {
           role: 'system',
@@ -112,7 +112,7 @@ export async function logMeal(description: string, userId?: string | null) {
   )
 
   const foodItemsData = usdaResults.map(({ food, usdaResult }) => {
-    if (usdaResult !== null) {
+    if (usdaResult !== null && food.quantityG > 0) {
       return {
         name: food.name,
         quantityG: food.quantityG,

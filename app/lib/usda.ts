@@ -20,7 +20,7 @@ function httpsGet(url: string): Promise<{ statusCode: number; body: unknown }> {
   });
 }
 
-export const RATE_LIMIT_STATUS_CODES: readonly number[] = [429, 403];
+export const RATE_LIMIT_STATUS_CODES: readonly number[] = [429];
 
 // ── Interfaces ────────────────────────────────────────────────────────────────
 
@@ -218,11 +218,15 @@ export async function searchUSDA(foodName: string): Promise<USDAFood | null> {
       const url = new URL(`${USDA_BASE}/foods/search`);
       url.searchParams.set('api_key', apiKey);
       url.searchParams.set('query', query);
-      url.searchParams.set('dataType', 'Foundation,SR Legacy,Branded');
+      url.searchParams.set('dataType', 'Foundation,SR Legacy,Survey (FNDDS),Branded');
       url.searchParams.set('pageSize', '5');
 
       const data = await httpsGet(url.toString());
 
+      if (data.statusCode === 403) {
+        console.error('[usda] HTTP 403 — invalid or revoked USDA API key. Check USDA_API_KEY in .env');
+        return null;
+      }
       if (RATE_LIMIT_STATUS_CODES.includes(data.statusCode)) {
         console.warn(`[usda] Rate limit hit (HTTP ${data.statusCode}) for query "${query}" — storing with null nutrients`);
         return null;
@@ -241,11 +245,11 @@ export async function searchUSDA(foodName: string): Promise<USDAFood | null> {
       }
     } catch (err) {
       console.error(`[usda] Fetch error for query "${query}":`, err);
-      return null;
+      continue;
     }
   }
 
-  // Both queries returned empty results
+  // Both queries returned empty results (or both failed)
   return null;
 }
 
