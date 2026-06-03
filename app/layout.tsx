@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ThemeProvider } from '@/components/theme-provider'
 import { BottomNav } from '@/components/BottomNav'
+import { Toaster } from '@/components/ui/sonner'
 import { Providers } from '@/components/Providers'
 import './globals.css'
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           >
             {children}
             <BottomNav />
+            <Toaster />
           </ThemeProvider>
         </Providers>
       </body>
