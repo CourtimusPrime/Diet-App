@@ -21,7 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: MCP Query Layer** - 9-tool MCP server connecting Claude.ai to Railway database (completed 2026-06-03)
 - [x] **Phase 3: Production Deployment** - Railway deploy + Claude Desktop MCP integration live (completed 2026-06-03)
 - [x] **Phase 03.1: Multi-User Support** - NextAuth v5, Google OAuth, per-user meal isolation, landing page (completed 2026-06-03)
-- [ ] **Phase 03.2: Log Tab** - View today's food, delete entries, sort by Chronological/Protein/Fat/Carbs/Fiber (INSERTED)
+- [x] **Phase 03.2: Log Tab** - View today's food, delete entries, sort by Chronological/Protein/Fat/Carbs/Fiber (INSERTED) (completed 2026-06-03)
 - [ ] **Phase 4: Hardening & Edge Cases** - Duplicate nutrient IDs, rate limits, and unmatched foods handled gracefully
 
 ## Phase Details
@@ -134,7 +134,7 @@ Plans:
 **Goal:** Log tab showing today's food, with delete and sort (Chronological, Protein, Fat, Carbs, Fiber)
 **Requirements**: LOG-01, LOG-02, LOG-03, LOG-04, LOG-05
 **Depends on:** Phase 03.1
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 
@@ -145,7 +145,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 03.2-03-PLAN.md — Create TodayLog.tsx (fetch, sort pills, skeleton, empty state, optimistic delete + Sonner undo), LogTab.tsx (state coordinator), update app/page.tsx to render LogTab, add Toaster to app/layout.tsx
+- [x] 03.2-03-PLAN.md — Create TodayLog.tsx (fetch, sort pills, skeleton, empty state, optimistic delete + Sonner undo), LogTab.tsx (state coordinator), update app/page.tsx to render LogTab, add Toaster to app/layout.tsx
 
 ### Phase 4: Hardening & Edge Cases
 
@@ -181,5 +181,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 2. MCP Query Layer | 2/2 | Complete   | 2026-06-03 |
 | 3. Production Deployment | 3/3 | Complete   | 2026-06-03 |
 | 3.1. Multi-User Support | 3/3 | Complete   | 2026-06-03 |
-| 3.2. Log Tab | 2/3 | In Progress|  |
+| 3.2. Log Tab | 3/3 | Complete   | 2026-06-03 |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
