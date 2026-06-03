@@ -72,7 +72,7 @@ Plans:
 
 **Wave 1**
 
-- [ ] 02-01-PLAN.md — Add 3 missing tools to mcp/server.ts (get_remaining_targets, get_deficiencies, get_nutrient_history) + verify DailyTarget table in Railway
+- [x] 02-01-PLAN.md — Add 3 missing tools to mcp/server.ts (get_remaining_targets, get_deficiencies, get_nutrient_history) + verify DailyTarget table in Railway
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -138,6 +138,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Logging Core | 5/5 | Complete   | 2026-06-03 |
-| 2. MCP Query Layer | 0/2 | Not started | - |
+| 2. MCP Query Layer | 1/2 | In Progress|  |
 | 3. Production Deployment | 0/4 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
