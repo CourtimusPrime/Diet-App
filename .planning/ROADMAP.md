@@ -18,8 +18,10 @@ use.
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Logging Core** - Chat input → LLM parse → USDA lookup → food cards with macros (completed 2026-06-03)
-- [ ] **Phase 2: MCP Query Layer** - 9-tool MCP server connecting Claude.ai to Railway database
-- [ ] **Phase 3: Production Deployment** - Railway deploy + Claude Desktop MCP integration live
+- [x] **Phase 2: MCP Query Layer** - 9-tool MCP server connecting Claude.ai to Railway database (completed 2026-06-03)
+- [x] **Phase 3: Production Deployment** - Railway deploy + Claude Desktop MCP integration live (completed 2026-06-03)
+- [x] **Phase 03.1: Multi-User Support** - NextAuth v5, Google OAuth, per-user meal isolation, landing page (completed 2026-06-03)
+- [ ] **Phase 03.2: Log Tab** - View today's food, delete entries, sort by Chronological/Protein/Fat/Carbs/Fiber (INSERTED)
 - [ ] **Phase 4: Hardening & Edge Cases** - Duplicate nutrient IDs, rate limits, and unmatched foods handled gracefully
 
 ## Phase Details
@@ -126,6 +128,16 @@ Plans:
 **Wave 3** *(blocked on Wave 2 completion)*
 
 - [x] 03.1-03-PLAN.md — Wire userId into logMeal() + /api/chat + /api/diet, sign-out button in ChatInterface, .env.example auth vars, Railway deploy with auth env vars
+
+### Phase 03.2: Log Tab (INSERTED)
+
+**Goal:** Log tab showing today's food, with delete and sort (Chronological, Protein, Fat, Carbs, Fiber)
+**Requirements**: TBD
+**Depends on:** Phase 03.1
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 3.2 to break down)
 
 ### Phase 4: Hardening & Edge Cases
 
