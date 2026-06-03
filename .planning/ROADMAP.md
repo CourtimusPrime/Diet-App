@@ -17,7 +17,7 @@ use.
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Logging Core** - Chat input → LLM parse → USDA lookup → food cards with macros
+- [x] **Phase 1: Logging Core** - Chat input → LLM parse → USDA lookup → food cards with macros (completed 2026-06-03)
 - [ ] **Phase 2: MCP Query Layer** - 8-tool MCP server connecting Claude.ai to Railway database
 - [ ] **Phase 3: Production Deployment** - Railway deploy + Claude Desktop MCP integration live
 - [ ] **Phase 4: Hardening & Edge Cases** - Duplicate nutrient IDs, rate limits, and unmatched foods handled gracefully
@@ -51,7 +51,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-04-PLAN.md — app/components/ChatInterface.tsx: chat UI with FoodCard, typing indicator, Enter-to-send (honors UI-SPEC.md)
+- [x] 01-04-PLAN.md — app/components/ChatInterface.tsx: chat UI with FoodCard, typing indicator, Enter-to-send (honors UI-SPEC.md)
 
 ### Phase 2: MCP Query Layer
 
@@ -97,6 +97,16 @@ Plans:
 - [ ] 03-03: Build MCP server locally; add entry to `claude_desktop_config.json`; verify tool list loads in Claude
 - [ ] 03-04: End-to-end smoke test: log meal via web → query via Claude Desktop MCP
 
+### Phase 03.1: Add multi-user support. This includes creating a landing page, an auth screen (email/password & 'Sign in with Google'), and state management. (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 3
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 03.1 to break down)
+
 ### Phase 4: Hardening & Edge Cases
 
 **Goal**: Known fragility points addressed so the app is reliable for daily use
@@ -125,7 +135,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Logging Core | 4/5 | In Progress|  |
+| 1. Logging Core | 5/5 | Complete   | 2026-06-03 |
 | 2. MCP Query Layer | 0/5 | Not started | - |
 | 3. Production Deployment | 0/4 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
