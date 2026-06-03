@@ -94,6 +94,8 @@ export class NoFoodItemsError extends Error {
   }
 }
 
+// Defense-in-depth: searchUSDA already handles errors internally, but this wrapper
+// ensures any future uncaught throw never propagates to the Promise.all in logMeal.
 async function usdaMatchSafe(foodName: string): Promise<USDAFood | null> {
   try {
     return await searchUSDA(foodName)
@@ -105,14 +107,14 @@ async function usdaMatchSafe(foodName: string): Promise<USDAFood | null> {
 
 export async function logMeal(description: string, userId?: string | null) {
   const foods = await extractFoodItems(description)
-  if (foods.length === 0) throw new NoFoodItemsError()
-
+  const validFoods = foods.filter((f) => f.quantityG > 0)
+  if (validFoods.length === 0) throw new NoFoodItemsError()
   const usdaResults = await Promise.all(
-    foods.map(async (food) => ({ food, usdaResult: await usdaMatchSafe(food.name) })),
+    validFoods.map(async (food) => ({ food, usdaResult: await usdaMatchSafe(food.name) })),
   )
 
   const foodItemsData = usdaResults.map(({ food, usdaResult }) => {
-    if (usdaResult !== null && food.quantityG > 0) {
+    if (usdaResult !== null) {
       return {
         name: food.name,
         quantityG: food.quantityG,
