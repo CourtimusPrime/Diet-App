@@ -143,10 +143,12 @@ Plans:
 
 Plans:
 
-- [ ] 04-01: Audit NUTRIENT_ID_TO_COLUMN for duplicate IDs across Foundation Foods vs SR Legacy; add deduplication logic
-- [ ] 04-02: Expand quantity estimation prompts; add common serving size reference in system prompt
-- [ ] 04-03: Add per-item USDA error handling in chat route; partial success (some items matched, some not) should not throw
-- [ ] 04-04: Add USDA_API_KEY env var reminder and rate-limit detection with graceful null fallback
+**Wave 1** *(all plans independent — run in parallel)*
+
+- [ ] 04-01-PLAN.md — Audit NUTRIENT_ID_TO_COLUMN for duplicate IDs; add DUPLICATE_NUTRIENT_IDS constant + deduplication in nutrientsToColumns (usda.ts)
+- [ ] 04-02-PLAN.md — Expand SERVING_SIZES with 10 new entries; refine extractFoodItems system prompt with cooked-weight default (food.ts)
+- [ ] 04-03-PLAN.md — Add usdaMatchSafe() wrapper in food.ts; per-item USDA error isolation via try/catch in logMeal
+- [ ] 04-04-PLAN.md — Rate-limit detection (HTTP 429/403) in httpsGet/searchUSDA; document USDA_API_KEY in .env.example
 
 ## Progress
 
