@@ -203,17 +203,22 @@ server.tool(
   async ({ date, days = 7, nutrients }) => {
     const endDate = localDateStr(date)
     const end = new Date(endDate)
-    const history: { date: string; totals: Record<string, number> }[] = []
-    for (let i = days - 1; i >= 0; i--) {
-      const d = new Date(end)
-      d.setDate(d.getDate() - i)
-      const dateStr = d.toISOString().slice(0, 10)
-      const totals = await getDailyTotals(dateStr)
-      history.push({
-        date: dateStr,
-        totals: nutrients ? Object.fromEntries(nutrients.map((k) => [k, totals[k] ?? 0])) : totals,
-      })
+    if (nutrients) {
+      const invalid = nutrients.filter((k) => !NUTRIENT_META[k])
+      if (invalid.length > 0) {
+        return { content: [{ type: 'text' as const, text: `Unknown nutrient column(s): ${invalid.join(', ')}. Call list_nutrients to see valid names.` }], isError: true }
+      }
     }
+    const dates = Array.from({ length: days }, (_, i) => {
+      const d = new Date(end)
+      d.setDate(d.getDate() - (days - 1 - i))
+      return d.toISOString().slice(0, 10)
+    })
+    const totalsArr = await Promise.all(dates.map((dateStr) => getDailyTotals(dateStr)))
+    const history = dates.map((dateStr, i) => ({
+      date: dateStr,
+      totals: nutrients ? Object.fromEntries(nutrients.map((k) => [k, totalsArr[i][k] ?? 0])) : totalsArr[i],
+    }))
     return { content: [{ type: 'text' as const, text: JSON.stringify({ endDate, days, history }) }] }
   },
 )

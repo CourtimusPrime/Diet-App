@@ -76,7 +76,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 02-02-PLAN.md — Claude Desktop config: write mcpServers.nutrilog entry with bun command + env vars; verify all 9 tools load
+- [x] 02-02-PLAN.md — Claude Desktop config: write mcpServers.nutrilog entry with bun command + env vars; verify all 9 tools load
 
 ### Phase 3: Production Deployment
 
@@ -138,6 +138,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Logging Core | 5/5 | Complete   | 2026-06-03 |
-| 2. MCP Query Layer | 1/2 | In Progress|  |
+| 2. MCP Query Layer | 2/2 | Complete   | 2026-06-03 |
 | 3. Production Deployment | 0/4 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
