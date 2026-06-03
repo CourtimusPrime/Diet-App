@@ -4,19 +4,23 @@
 
 import https from 'node:https';
 
-function httpsGet(url: string): Promise<unknown> {
+function httpsGet(url: string): Promise<{ statusCode: number; body: unknown }> {
   return new Promise((resolve, reject) => {
     const req = https.get(url, { family: 4 } as object, (res) => {
       let data = '';
       res.on('data', (chunk: string) => { data += chunk; });
       res.on('end', () => {
-        try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
+        let body: unknown = null;
+        try { body = JSON.parse(data); } catch { /* leave body null */ }
+        resolve({ statusCode: res.statusCode ?? 0, body });
       });
     });
     req.on('error', reject);
     req.setTimeout(10000, () => { req.destroy(new Error('USDA request timeout')); });
   });
 }
+
+export const RATE_LIMIT_STATUS_CODES: readonly number[] = [429, 403];
 
 // ── Interfaces ────────────────────────────────────────────────────────────────
 
@@ -217,11 +221,17 @@ export async function searchUSDA(foodName: string): Promise<USDAFood | null> {
       url.searchParams.set('dataType', 'Foundation,SR Legacy,Branded');
       url.searchParams.set('pageSize', '5');
 
-      const data = (await httpsGet(url.toString())) as USDASearchResponse;
+      const data = await httpsGet(url.toString());
 
-      if (data.foods?.length > 0) {
+      if (RATE_LIMIT_STATUS_CODES.includes(data.statusCode)) {
+        console.warn(`[usda] Rate limit hit (HTTP ${data.statusCode}) for query "${query}" — storing with null nutrients`);
+        return null;
+      }
+
+      const body = data.body as USDASearchResponse;
+      if (body?.foods?.length > 0) {
         // Select highest-priority dataType match
-        const sorted = [...data.foods].sort((a, b) => {
+        const sorted = [...body.foods].sort((a, b) => {
           const ai = DATA_TYPE_PRIORITY.indexOf(a.dataType);
           const bi = DATA_TYPE_PRIORITY.indexOf(b.dataType);
           // Unknown dataTypes sort last
