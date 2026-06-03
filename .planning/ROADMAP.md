@@ -117,15 +117,15 @@ Plans:
 
 **Wave 1**
 
-- [ ] 03.1-01-PLAN.md — Package fix (next-auth@beta + bcryptjs), Prisma schema (User/Account/VerificationToken + Meal.userId), auth.config.ts + auth.ts + catch-all route + TypeScript augmentation
+- [x] 03.1-01-PLAN.md — Package fix (next-auth@beta + bcryptjs), Prisma schema (User/Account/VerificationToken + Meal.userId), auth.config.ts + auth.ts + catch-all route + TypeScript augmentation
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 03.1-02-PLAN.md — middleware.ts (route protection + MCP exemption), Providers.tsx (SessionProvider), layout.tsx update, sign-in page, sign-up page, /api/auth/register endpoint
+- [x] 03.1-02-PLAN.md — middleware.ts (route protection + MCP exemption), Providers.tsx (SessionProvider), layout.tsx update, sign-in page, sign-up page, /api/auth/register endpoint
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 03.1-03-PLAN.md — Wire userId into logMeal() + /api/chat + /api/diet, sign-out button in ChatInterface, .env.example auth vars, Railway deploy with auth env vars
+- [x] 03.1-03-PLAN.md — Wire userId into logMeal() + /api/chat + /api/diet, sign-out button in ChatInterface, .env.example auth vars, Railway deploy with auth env vars
 
 ### Phase 4: Hardening & Edge Cases
 
@@ -158,5 +158,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Logging Core | 5/5 | Complete   | 2026-06-03 |
 | 2. MCP Query Layer | 2/2 | Complete   | 2026-06-03 |
 | 3. Production Deployment | 3/3 | Complete   | 2026-06-03 |
-| 3.1. Multi-User Support | 0/3 | Not started | - |
+| 3.1. Multi-User Support | 3/3 | Complete   | 2026-06-03 |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
