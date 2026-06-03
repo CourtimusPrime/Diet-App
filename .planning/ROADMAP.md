@@ -96,15 +96,15 @@ Plans:
 
 **Wave 1**
 
-- [ ] 03-01-PLAN.md — Fix package.json PORT flag + packageManager field; create railway.json; create Railway project via dashboard
+- [x] 03-01-PLAN.md — Fix package.json PORT flag + packageManager field; create railway.json; create Railway project via dashboard
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 03-02-PLAN.md — Set env vars in Railway dashboard; trigger first deploy; verify live app logs a meal
+- [x] 03-02-PLAN.md — Set env vars in Railway dashboard; trigger first deploy; verify live app logs a meal
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 03-03-PLAN.md — Verify .env.example completeness; end-to-end smoke test: log via Railway URL → query via Claude Desktop MCP
+- [x] 03-03-PLAN.md — Verify .env.example completeness; end-to-end smoke test: log via Railway URL → query via Claude Desktop MCP
 
 ### Phase 03.1: Add multi-user support. This includes creating a landing page, an auth screen (email/password & 'Sign in with Google'), and state management. (INSERTED)
 
@@ -146,5 +146,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Logging Core | 5/5 | Complete   | 2026-06-03 |
 | 2. MCP Query Layer | 2/2 | Complete   | 2026-06-03 |
-| 3. Production Deployment | 0/3 | Not started | - |
+| 3. Production Deployment | 3/3 | Complete   | 2026-06-03 |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
