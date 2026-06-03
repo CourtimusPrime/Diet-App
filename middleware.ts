@@ -9,19 +9,23 @@ export default auth((req) => {
 
   const isAuthRoute = nextUrl.pathname.startsWith('/api/auth')
   const isMcpRoute = nextUrl.pathname.startsWith('/api/mcp')
+  const isPublicRoute = nextUrl.pathname === '/'
   const isSignInPage = nextUrl.pathname === '/sign-in'
   const isSignUpPage = nextUrl.pathname === '/sign-up'
 
   // Always allow NextAuth internals and MCP (called by Claude Desktop without auth)
   if (isAuthRoute || isMcpRoute) return
 
-  // Redirect authenticated users away from auth pages
+  // Redirect authenticated users away from auth pages (not from landing)
   if (isLoggedIn && (isSignInPage || isSignUpPage)) {
     return Response.redirect(new URL('/', nextUrl))
   }
 
-  // Redirect unauthenticated users to sign-in
-  if (!isLoggedIn && !isSignInPage && !isSignUpPage) {
+  // Allow unauthenticated on public routes and auth pages
+  if (!isLoggedIn && (isPublicRoute || isSignInPage || isSignUpPage)) return
+
+  // Redirect unauthenticated users on all other routes to sign-in
+  if (!isLoggedIn) {
     return Response.redirect(new URL('/sign-in', nextUrl))
   }
 })
