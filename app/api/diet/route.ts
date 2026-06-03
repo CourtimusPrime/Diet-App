@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/app/lib/prisma'
+import { auth } from '@/app/lib/auth'
 
 const NUTRIENT_KEYS = [
   'water_g','energy_kcal','energy_atwater_general_kcal','energy_atwater_specific_kcal',
@@ -28,11 +29,14 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const dateParam = searchParams.get('date') ?? new Date().toISOString().slice(0, 10)
 
+  const session = await auth()
+  const userId = session?.user?.id
+
   const start = new Date(`${dateParam}T00:00:00.000Z`)
   const end = new Date(`${dateParam}T23:59:59.999Z`)
 
   const meals = await prisma.meal.findMany({
-    where: { createdAt: { gte: start, lte: end } },
+    where: { createdAt: { gte: start, lte: end }, userId: userId ?? undefined },
     include: { foodItems: true },
     orderBy: { createdAt: 'asc' },
   })

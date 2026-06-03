@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { signOut } from 'next-auth/react'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
@@ -314,7 +315,8 @@ export function ChatInterface() {
       {/* ── Header (sticky top) ─────────────────────────────────────────── */}
       <div className="sticky top-0 z-10 flex items-center h-14 px-4 border-b bg-background/95 backdrop-blur">
         <Utensils className="mr-2 h-5 w-5" />
-        <span className="font-semibold text-lg">NutriLog</span>
+        <span className="flex-1 font-semibold text-lg">NutriLog</span>
+        <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/sign-in' })}>Sign out</Button>
       </div>
 
       {/* ── Scroll area ─────────────────────────────────────────────────── */}

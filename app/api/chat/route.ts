@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { logMeal, NoFoodItemsError } from '@/app/lib/food';
+import { auth } from '@/app/lib/auth';
 
 const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
@@ -7,6 +8,15 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request): Promise<Response> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+  const userId = session.user.id;
+
   let message: string;
   try {
     const body = (await req.json()) as { message?: unknown };
@@ -31,7 +41,7 @@ export async function POST(req: Request): Promise<Response> {
       try {
         let meal: Awaited<ReturnType<typeof logMeal>>;
         try {
-          meal = await logMeal(message);
+          meal = await logMeal(message, userId);
         } catch (err) {
           if (err instanceof NoFoodItemsError) {
             controller.enqueue(

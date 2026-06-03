@@ -82,7 +82,7 @@ export class NoFoodItemsError extends Error {
   }
 }
 
-export async function logMeal(description: string) {
+export async function logMeal(description: string, userId?: string | null) {
   const foods = await extractFoodItems(description)
   if (foods.length === 0) throw new NoFoodItemsError()
 
@@ -111,7 +111,7 @@ export async function logMeal(description: string) {
   })
 
   return prisma.meal.create({
-    data: { description, foodItems: { create: foodItemsData } },
+    data: { description, userId: userId ?? undefined, foodItems: { create: foodItemsData } },
     include: { foodItems: true },
   })
 }
