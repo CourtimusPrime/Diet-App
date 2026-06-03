@@ -178,6 +178,18 @@ export const NUTRIENT_ID_TO_COLUMN: Record<number, string> = {
   1099: 'fluoride_mcg',            // Fluoride [ASSUMED: FDC pattern]
 };
 
+// ── DUPLICATE_NUTRIENT_IDS ────────────────────────────────────────────────────
+// Documents known nutrientId ambiguities across USDA datasets.
+// When the same nutrientId is returned more than once in a single food response,
+// the first occurrence is kept and subsequent ones are skipped with a console.warn.
+// This map documents WHY a given ID is flagged — for auditing and future maintenance.
+
+export const DUPLICATE_NUTRIENT_IDS: Record<number, { note: string }> = {
+  1278: {
+    note: 'SR Legacy may emit 1278 as palmitoleic; Foundation uses 1267 for palmitoleic (mufa_16_1_g). EPA mapping retained. Duplicate entry skipped.',
+  },
+};
+
 // ── USDA API helpers ──────────────────────────────────────────────────────────
 
 const USDA_BASE = 'https://api.nal.usda.gov/fdc/v1';
@@ -242,8 +254,20 @@ export function nutrientsToColumns(
   quantityG: number,
 ): Record<string, number> {
   const result: Record<string, number> = {};
+  const seenIds = new Set<number>();
 
   for (const nutrient of food.foodNutrients) {
+    if (seenIds.has(nutrient.nutrientId)) {
+      console.warn(
+        '[usda] Duplicate nutrientId skipped:',
+        nutrient.nutrientId,
+        '→',
+        NUTRIENT_ID_TO_COLUMN[nutrient.nutrientId] ?? 'unknown',
+      );
+      continue;
+    }
+    seenIds.add(nutrient.nutrientId);
+
     const columnName = NUTRIENT_ID_TO_COLUMN[nutrient.nutrientId];
     if (columnName && nutrient.value != null) {
       result[columnName] = (nutrient.value * quantityG) / 100;
