@@ -18,7 +18,7 @@ use.
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Logging Core** - Chat input → LLM parse → USDA lookup → food cards with macros (completed 2026-06-03)
-- [ ] **Phase 2: MCP Query Layer** - 8-tool MCP server connecting Claude.ai to Railway database
+- [ ] **Phase 2: MCP Query Layer** - 9-tool MCP server connecting Claude.ai to Railway database
 - [ ] **Phase 3: Production Deployment** - Railway deploy + Claude Desktop MCP integration live
 - [ ] **Phase 4: Hardening & Edge Cases** - Duplicate nutrient IDs, rate limits, and unmatched foods handled gracefully
 
@@ -55,26 +55,28 @@ Plans:
 
 ### Phase 2: MCP Query Layer
 
-**Goal**: MCP server is running locally and all 8 tools return correct data from the Railway database
+**Goal**: MCP server is running locally and all 9 tools return correct data from the Railway database
 **Depends on**: Phase 1
 **Requirements**: DB-04, MCP-01, MCP-02, MCP-03, MCP-04, MCP-05, MCP-06, MCP-07, MCP-08, MCP-09
 **Success Criteria** (what must be TRUE):
 
-  1. `get_nutrient_totals` returns correct summed values for a day with multiple logged meals (verified against DB)
+  1. `get_daily_nutrition` returns correct summed values for a day with multiple logged meals (verified against DB)
   2. `get_deficiencies` identifies a nutrient correctly flagged as below threshold when daily logged amount is under the set target
   3. `get_nutrient_history` returns one entry per day with correct per-day totals for the requested columns
-  4. `set_daily_target` upserts a DailyTarget row and `get_remaining_targets` reflects it immediately
-  5. `list_nutrient_columns` returns all 103 column names with correct labels and units
+  4. `set_goal` upserts a DailyTarget row and `get_remaining_targets` reflects it immediately
+  5. `list_nutrients` returns all 103 column names with correct labels and units
 
-**Plans**: 5 plans
+**Plans**: 2 plans
 
 Plans:
 
-- [ ] 02-01: `mcp-server/src/index.ts` — McpServer scaffold, prisma client, dayRange() and aggregateNutrients() helpers
-- [ ] 02-02: Implement get_meals_today, get_nutrient_totals, get_remaining_targets
-- [ ] 02-03: Implement get_nutrient_history, get_deficiencies
-- [ ] 02-04: Implement get_recent_meals, get_meals_range, set_daily_target, list_nutrient_columns
-- [ ] 02-05: `mcp-server/package.json`, `tsconfig.json`; verify `npm run build` produces `dist/index.js`
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — Add 3 missing tools to mcp/server.ts (get_remaining_targets, get_deficiencies, get_nutrient_history) + verify DailyTarget table in Railway
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 02-02-PLAN.md — Claude Desktop config: write mcpServers.nutrilog entry with bun command + env vars; verify all 9 tools load
 
 ### Phase 3: Production Deployment
 
@@ -85,7 +87,7 @@ Plans:
 
   1. Railway deployment succeeds with `prisma migrate deploy && next start` and app is reachable at Railway URL
   2. Logging a meal via the live URL creates a database record visible via MCP
-  3. Claude Desktop can call `get_meals_today` and return real logged meals from the Railway database
+  3. Claude Desktop can call `get_meals` and return real logged meals from the Railway database
   4. `.env.example` documents all required variables with descriptions
 
 **Plans**: 4 plans
@@ -136,6 +138,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Logging Core | 5/5 | Complete   | 2026-06-03 |
-| 2. MCP Query Layer | 0/5 | Not started | - |
+| 2. MCP Query Layer | 0/2 | Not started | - |
 | 3. Production Deployment | 0/4 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
