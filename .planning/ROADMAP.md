@@ -132,12 +132,20 @@ Plans:
 ### Phase 03.2: Log Tab (INSERTED)
 
 **Goal:** Log tab showing today's food, with delete and sort (Chronological, Protein, Fat, Carbs, Fiber)
-**Requirements**: TBD
+**Requirements**: LOG-01, LOG-02, LOG-03, LOG-04, LOG-05
 **Depends on:** Phase 03.1
-**Plans:** 0 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 3.2 to break down)
+
+**Wave 1** *(plans 01 and 02 are independent — run in parallel)*
+
+- [ ] 03.2-01-PLAN.md — Install shadcn Skeleton and Sonner components (npx shadcn add skeleton && npx shadcn add sonner)
+- [ ] 03.2-02-PLAN.md — Extract FoodCard to components/FoodCard.tsx (add mealId/onDelete props); wire ChatInterface onMealLogged callback; create GET /api/meals/today and DELETE /api/meals/[mealId] endpoints
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 03.2-03-PLAN.md — Create TodayLog.tsx (fetch, sort pills, skeleton, empty state, optimistic delete + Sonner undo), LogTab.tsx (state coordinator), update app/page.tsx to render LogTab, add Toaster to app/layout.tsx
 
 ### Phase 4: Hardening & Edge Cases
 
@@ -173,4 +181,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 2. MCP Query Layer | 2/2 | Complete   | 2026-06-03 |
 | 3. Production Deployment | 3/3 | Complete   | 2026-06-03 |
 | 3.1. Multi-User Support | 3/3 | Complete   | 2026-06-03 |
+| 3.2. Log Tab | 0/3 | Not started | - |
 | 4. Hardening & Edge Cases | 0/4 | Not started | - |
