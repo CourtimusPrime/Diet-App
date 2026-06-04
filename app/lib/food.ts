@@ -36,7 +36,7 @@ export interface ExtractedFood {
 export async function extractFoodItems(userMessage: string): Promise<ExtractedFood[]> {
   try {
     const response = await openai.chat.completions.create({
-      model: 'google/gemini-2.0-flash-001',
+      model: 'google/gemini-2.5-flash',
       messages: [
         {
           role: 'system',
