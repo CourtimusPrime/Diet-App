@@ -5,10 +5,24 @@ import bcryptjs from 'bcryptjs'
 import { prisma } from '@/app/lib/prisma'
 import authConfig from './auth.config'
 
+// In production (DEV=false), set AUTH_URL from RAILWAY_PUBLIC_DOMAIN if not already set.
+// NextAuth v5 reads AUTH_URL at module init time to build OAuth callback URLs.
+// DEV=true  → skip (NextAuth auto-detects localhost)
+// DEV=false → require AUTH_URL or derive from Railway's injected RAILWAY_PUBLIC_DOMAIN
+if (process.env.DEV === 'false' && !process.env.AUTH_URL) {
+  const railwayDomain = process.env.RAILWAY_PUBLIC_DOMAIN
+  if (railwayDomain) {
+    process.env.AUTH_URL = `https://${railwayDomain}`
+  } else {
+    console.warn('[auth] DEV=false but AUTH_URL and RAILWAY_PUBLIC_DOMAIN are both unset. Auth callbacks may use wrong base URL.')
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
   session: { strategy: 'jwt' },
+  trustHost: true,
   providers: [
     ...authConfig.providers.filter((p) => p.id !== 'credentials'),
     Credentials({
