@@ -165,10 +165,10 @@ Plans:
 
 **Wave 1** *(all plans independent — run in parallel)*
 
-- [ ] 04-01-PLAN.md — Audit NUTRIENT_ID_TO_COLUMN for duplicate IDs; add DUPLICATE_NUTRIENT_IDS constant + deduplication in nutrientsToColumns (usda.ts)
-- [ ] 04-02-PLAN.md — Expand SERVING_SIZES with 10 new entries; refine extractFoodItems system prompt with cooked-weight default (food.ts)
-- [ ] 04-03-PLAN.md — Add usdaMatchSafe() wrapper in food.ts; per-item USDA error isolation via try/catch in logMeal
-- [ ] 04-04-PLAN.md — Rate-limit detection (HTTP 429/403) in httpsGet/searchUSDA; document USDA_API_KEY in .env.example
+- [x] 04-01-PLAN.md — Audit NUTRIENT_ID_TO_COLUMN for duplicate IDs; add DUPLICATE_NUTRIENT_IDS constant + deduplication in nutrientsToColumns (usda.ts)
+- [x] 04-02-PLAN.md — Expand SERVING_SIZES with 10 new entries; refine extractFoodItems system prompt with cooked-weight default (food.ts)
+- [x] 04-03-PLAN.md — Add usdaMatchSafe() wrapper in food.ts; per-item USDA error isolation via try/catch in logMeal
+- [x] 04-04-PLAN.md — Rate-limit detection (HTTP 429/403) in httpsGet/searchUSDA; document USDA_API_KEY in .env.example
 
 ## Progress
 
@@ -182,4 +182,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 3. Production Deployment | 3/3 | Complete   | 2026-06-03 |
 | 3.1. Multi-User Support | 3/3 | Complete   | 2026-06-03 |
 | 3.2. Log Tab | 3/3 | Complete   | 2026-06-03 |
-| 4. Hardening & Edge Cases | 0/4 | Not started | - |
+| 4. Hardening & Edge Cases | 4/4 | Complete   | 2026-06-04 |
